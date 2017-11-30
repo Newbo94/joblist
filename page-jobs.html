@@ -1,0 +1,138 @@
+<head>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Listevisning</title>
+  <link rel="stylesheet" type="text/css" href="jobs.css">
+  <link rel="stylesheet" type="text/js" href="filter.js">
+
+  <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+  <link href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' rel='stylesheet' type='text/css'>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+</head>
+
+<body style="background-color: #F7F7F7;">
+  <div class="container" style="margin-top: 50px;">
+
+    <div class="row">
+      <!-- filter sidebar -->
+      <div id="filter-sidebar" class="col-xs-6 col-sm-10 col-md-10 col-lg-3 visible-xs-block hidden-xs sliding-sidebar">
+        <div id="jw-filters" style="background-color:#ffffff;" class="filters">
+          <div class="filter-block">
+            <h4>
+          Filtrer din søgning<span></span></h4>
+            <input id="filter-search" placeholder="Search" type="text">
+          </div>
+          <div class="filter-block">
+            <h4 data-toggle="collapse" data-target="#jw-filter-group-1">
+          Job types <span class="toggle-masks"></span></h4>
+            <div id="jw-filter-group-1" class="list-group collapse in filter-block">
+              <label class="space-btw">Fuld tid<input class="filter-job" value="full_time_job" type="checkbox"></label>
+              <label class="space-btw">Deltid<input class="filter-job" value="part_time_job" type="checkbox"></label>
+              <label class="space-btw">Studiejob<input class="filter-job" value="studiejob" type="checkbox"></label>
+              <label class="space-btw">Fleksjob<input class="filter-job" value="flex_job" type="checkbox"></label>
+            </div>
+          </div>
+          <div class="filter-block">
+            <h4 data-toggle="collapse" data-target="#jw-filter-group-2">
+          Afstand<span class="toggle-masks"></span></h4>
+            <div id="jw-filter-group-2" class="list-group collapse in filter-block" style="max-width:200px; padding-left: 10px;">
+              <div id="slider-range"></div>
+              <p>
+                <label for="amount"></label>
+                <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold; font-size:14px;">
+              </p>
+            </div>
+          </div>
+          <div class="filter-block">
+            <h4 data-toggle="collapse" data-target="#jw-filter-group-3">
+          Kategorier <span class="toggle-masks"></span></h4>
+            <div id="jw-filter-group-3" class="list-group collapse in filter-block">
+              <label class="" data-toggle="collapsed" data-target="#sub-group-3-1" aria-expanded="false">Informationteknologi</label>
+              <ul data-toggle="collapse" id="sub-group-3-1" aria-expanded="false">
+                <li class="" id="">Informationteknologi<input class="filter-job" value="" type="checkbox"></li>
+                <li class="" id="">Informationteknologi<input class="filter-job" value="" type="checkbox"></li>
+                <li class="" id="">Informationteknologi<input class="filter-job" value="" type="checkbox"></li>
+                <li class="" id="">Informationteknologi<input class="filter-job" value="" type="checkbox"></li>
+              </ul>
+              <label class="" data-toggle="collapse" data-target="#jw-filter-sub-group-3-2">Informationteknologi</label>
+              <ul data-toggle="collapse" id="jw-filter-sub-group-3-2">
+                <li class="" id="">Informationteknologi<input class="filter-job" value="" type="checkbox"></li>
+                <li class="" id="">Informationteknologi<input class="filter-job" value="" type="checkbox"></li>
+                <li class="" id="">Informationteknologi<input class="filter-job" value="" type="checkbox"></li>
+                <li class="" id="">Informationteknologi<input class="filter-job" value="" type="checkbox"></li>
+              </ul>
+              <label class="" data-toggle="collapse" data-target="#jw-filter-sub-group-3-3">Informationteknologi</label>
+              <ul data-toggle="collapse" id="jw-filter-sub-group-3-3">
+                <li class="" id="">Informationteknologi<input class="filter-job" value="" type="checkbox"></li>
+                <li class="" id="">Informationteknologi<input class="filter-job" value="" type="checkbox"></li>
+                <li class="" id="">Informationteknologi<input class="filter-job" value="" type="checkbox"></li>
+                <li class="" id="">Informationteknologi<input class="filter-job" value="" type="checkbox"></li>
+              </ul>
+              <label class="" data-toggle="collapse" data-target="#jw-filter-sub-group-3-4">Informationteknologi</label>
+              <ul data-toggle="collapse" id="jw-filter-sub-group-3-4">
+                <li class="" id="">Informationteknologi<input class="filter-job" value="" type="checkbox"></li>
+                <li class="" id="">Informationteknologi<input class="filter-job" value="" type="checkbox"></li>
+                <li class="" id="">Informationteknologi<input class="filter-job" value="" type="checkbox"></li>
+                <li class="" id="">Informationteknologi<input class="filter-job" value="" type="checkbox"></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Filter Sidebar END -->
+
+
+
+
+      <!-- job-list container -->
+      <div id="jw-job-post-list" class="col-xs-12 col-sm-10 col-md-10 col-lg-9">
+        <div class="job-list">
+
+          <div class="col-md-12 job-post-container">
+            <div class="card" style="">
+              <img class="card-img center-image" src="http://via.placeholder.com/250x250" alt="Card image cap" style="padding: 35px; border-radius: 200px; width:300px; height: 300px;">
+              <div class="card-block col-md-12" style="padding: 35px;">
+                <h4 class="card-title">Virksomhed navn</h4>
+                <h4 class="card-sub-title">Job titel</h4>
+                <p class="card-text" style="min-height: 100px;overflow: hidden;">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <div id="jw-label-info" class="">
+                  <div id="jw-label-info-text" style="padding: 0;">
+                    <p class="card-text"><small class="text-muted">Ansøgningsfrist: 30. Nov 2017</small></p>
+                    <p class="card-text"><small class="text-muted">Job type: Fuldtid</small></p>
+                  </div>
+                  <div id="jw-label-info-button">
+                    <a href="#" class="btn jw-btn-primary">Se opslag</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- job-list container END -->
+    </div>
+  </div>
+</body>
+
+<script>
+  $(function() {
+    $("#slider-range").slider({
+      range: true,
+      min: 0,
+      max: 500,
+      values: [0, 500],
+      slide: function(event, ui) {
+        $("#amount").val(ui.values[0] + "km" + " - " + ui.values[1] + "km");
+      }
+    });
+    $("#amount").val($("#slider-range").slider("values", 0) + "km" + " - " +
+      $("#slider-range").slider("values", 1) + "km");
+  });
+</script>
