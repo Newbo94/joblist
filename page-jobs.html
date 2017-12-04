@@ -1,3 +1,4 @@
+<html>
 <head>
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
@@ -33,10 +34,10 @@
             <h4 data-toggle="collapse" data-target="#jw-filter-group-1">
           Job types <span class="toggle-masks"></span></h4>
             <div id="jw-filter-group-1" class="list-group collapse in filter-block">
-              <label class="space-btw">Fuld tid<input class="filter-job" value="full_time_job" type="checkbox"></label>
-              <label class="space-btw">Deltid<input class="filter-job" value="part_time_job" type="checkbox"></label>
-              <label class="space-btw">Studiejob<input class="filter-job" value="studiejob" type="checkbox"></label>
-              <label class="space-btw">Fleksjob<input class="filter-job" value="flex_job" type="checkbox"></label>
+              <label class="space-btw">Fuld tid<input class="filter-job" value="Fuldtid" type="checkbox"></label>
+              <label class="space-btw">Deltid<input class="filter-job" value="Deltid" type="checkbox"></label>
+              <label class="space-btw">Studiejob<input class="filter-job" value="Studiejob" type="checkbox"></label>
+              <label class="space-btw">Fleksjob<input class="filter-job" value="Fleksjob" type="checkbox"></label>
             </div>
           </div>
           <div class="filter-block">
@@ -96,33 +97,134 @@
         <div class="job-list">
 
           <div class="col-md-12 job-post-container">
-            <div class="card" style="">
-              <img class="card-img center-image" src="http://via.placeholder.com/250x250" alt="Card image cap" style="padding: 35px; border-radius: 200px; width:300px; height: 300px;">
-              <div class="card-block col-md-12" style="padding: 35px;">
-                <h4 class="card-title">Virksomhed navn</h4>
-                <h4 class="card-sub-title">Job titel</h4>
-                <p class="card-text" style="min-height: 100px;overflow: hidden;">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <div id="jw-label-info" class="">
-                  <div id="jw-label-info-text" style="padding: 0;">
-                    <p class="card-text"><small class="text-muted">Ansøgningsfrist: 30. Nov 2017</small></p>
-                    <p class="card-text"><small class="text-muted">Job type: Fuldtid</small></p>
-                  </div>
-                  <div id="jw-label-info-button">
-                    <a href="#" class="btn jw-btn-primary">Se opslag</a>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
       <!-- job-list container END -->
     </div>
   </div>
-</body>
 
 <script>
   $(function() {
+    var url = 'http://hr-skyen.dk/hr/api/jobs/testvirksomhed?locale=da_DK';
+    var jobs = [];
+    var search = '';
+    var filters = [];
+
+    var createJob = function(props) {
+      if (!props.active) {
+        return '';
+      }
+
+      var title = props.title;
+      var image = props.image || 'http://via.placeholder.com/250x250';
+      var shortdescription = props.shortdescription;
+      var deadline = props.deadline || 'Snarest muligt';
+      var jobTypes = props.jobTypes;
+
+      return '\
+        <div class="card">\
+          <img class="card-img center-image" src="' + image + '" alt="Card image cap" style="padding: 35px; border-radius: 200px; width:300px; height: auto;">\
+          <div class="card-block col-md-12" style="padding: 35px;">\
+            <h4 class="card-title">HR-Skyen</h4>\
+            <h4 class="card-sub-title">' + title + '</h4>\
+            <p class="card-text" style="min-height: 100px;overflow: hidden;">' + shortdescription + '</p>\
+            <div id="jw-label-info" class="">\
+              <div id="jw-label-info-text" style="padding: 0;">\
+                <p class="card-text"><small class="text-muted">Ansøgningsfrist: ' + deadline + '</small></p>\
+                <p class="card-text"><small class="text-muted">Job type: ' + jobTypes[0] + '</small></p>\
+              </div>\
+              <div id="jw-label-info-button">\
+                <a href="#" class="btn jw-btn-primary">Se opslag</a>\
+              </div>\
+            </div>\
+          </div>\
+        </div>\
+      ';
+    }
+
+    // Clears container and re-renders jobs
+    var renderJobs = function() {
+      $('.job-post-container').html('');
+
+      jobs = jobs.map(function(job) {
+        for(var i = 0; i < filters.length; i++) {
+          var isActive =
+            job.jobTypes.indexOf(filters[i]) !== -1 &&
+            (job.shortdescription.indexOf(search) !== -1 || job.title.indexOf(search) !== -1)
+
+          job.active = isActive;
+
+          if(isActive) {
+            break;
+          }
+        }
+
+        return job;
+      });
+
+      var activeJobs = jobs.filter(function(job) {
+        return job.active;
+      })
+
+      if (!activeJobs.length) {
+        $('.job-post-container').html('Der er ingen aktive job.');
+      }
+
+      activeJobs.forEach(function(job) {
+        $('.job-post-container').append(createJob(job));
+      });
+    }
+
+    // Retrieve jobs and render them
+    $.get(url, function(res) {
+      jobs = Object.keys(res).map(function(id) {
+        return {
+          active: true,
+          title: res[id].title,
+          image: res[id].frontimage,
+          shortdescription: res[id].shortdescription,
+          jobTypes: res[id].positions,
+          deadline: res[id].applybefore,
+        };
+      });
+
+      renderJobs();
+    });
+
+    // Handle search
+    $('#filter-search').on('keyup', function(e) {
+      search = e.target.value;
+
+      // Search in description and title
+      jobs = jobs.map(function(job) {
+        job.active = job.shortdescription.indexOf(search) !== -1 || job.title.indexOf(search) !== -1;
+        return job;
+      });
+
+      renderJobs();
+    });
+
+    // Handle job type filtering
+    $('.filter-job').on('change', function(e) {
+      var filter = e.target.value;
+
+      if (this.checked) {
+        filters.push(filter)
+      } else {
+        filters.splice(filters.indexOf(filter), 1)
+      }
+
+      if (!filters.length) {
+        jobs = jobs.map(function(job) {
+          job.active = job.shortdescription.indexOf(search) !== -1;
+          return job;
+        });
+      }
+
+      renderJobs();
+    });
+
     $("#slider-range").slider({
       range: true,
       min: 0,
@@ -136,3 +238,5 @@
       $("#slider-range").slider("values", 1) + "km");
   });
 </script>
+</body>
+</html>
